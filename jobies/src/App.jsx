@@ -24,10 +24,9 @@ function App() {
                      }}>
                      <AppNavBar />
                      <Routes>
-                        <Route path="/" element={<HomePage />} />
                         <Route path="/login" element={<Login />} />
                      </Routes>
-                     <ImgMediaCard />
+                     {/* <ImgMediaCard /> */}
                   </Box>
                </Container>
             </div>

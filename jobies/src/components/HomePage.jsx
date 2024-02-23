@@ -12,14 +12,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './Login';
-//import { Routes, Route, useNavigate } from 'react-router-dom';
-import {Link} from "react-router-dom";
-const navigateToLogin = () => {
+import { Link } from "react-router-dom";
 
-  navigate('/login');
-};
 const routes = [
   {
     path: "/",
@@ -50,10 +44,9 @@ export default function AppNavBar() {
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Menu
-          </Typography>        
-         
-          <Button color="inherit">
-            <Link to="/login" color="inherit" style={{ textDecoration: 'none' }}>Login</Link>
+          </Typography>
+          <Button color="inherit" component={Link} to="/login">
+            Login
           </Button>
         </Toolbar>
       </AppBar>
