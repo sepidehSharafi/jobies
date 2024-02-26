@@ -7,21 +7,40 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { post } from '../../httpClient';
+import { useState } from "react";
+// import { RouterLink } from "react-router-dom";
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  // const handleSend = async () => {
+  //   const response = await post("/login", {username, password});
+  //   if(response.error){
+  //     console.log("error");
+  //   } else{
+  //     localStorage.setItem("userAuth", JSON.stringify(response.user));
+  //   }
+  // };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const response = await post("/login", { username, password });
+    if (response.error) {
+      console.log("error");
+    } else {
+      console.log(response);
+      <Link to="/"></Link>
+      localStorage.setItem("userAuth", JSON.stringify(response.user));
+    }
   };
+
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
-        sx={{  
+        sx={{
           marginTop: 8,
           display: "flex",
           flexDirection: "column",
@@ -36,10 +55,11 @@ export default function SignIn() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="username"
+            name="username"
+            autoComplete="username"
+            onChange={(e) => setUsername(e.target.value)}
             autoFocus
           />
           <TextField
@@ -51,6 +71,7 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -71,7 +92,7 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+            <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
