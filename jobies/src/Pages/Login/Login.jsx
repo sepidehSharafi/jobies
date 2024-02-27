@@ -9,8 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { post } from '../../httpClient';
 import { useState } from "react";
-// import { RouterLink } from "react-router-dom";
-
+import { Link as RouterLink } from "react-router-dom";
 export default function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -92,9 +91,9 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-            <Link href="#" variant="body2">
+            <RouterLink to="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
-              </Link>
+              </RouterLink>
             </Grid>
           </Grid>
         </Box>
