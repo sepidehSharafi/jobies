@@ -67,9 +67,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function PostCards({ posts }) {
   return (
     <div>
-      {posts.map((post, index) => (
+      {/* {posts.map((post, index) => (
         <MultipleInteractionCard key={index} post={post} />
-      ))}
+      ))} */}
     </div>
   );
 }
