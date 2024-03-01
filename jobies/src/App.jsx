@@ -1,5 +1,4 @@
 import * as React from 'react';
-import './App.css'
 import { createTheme } from '@mui/material/styles';
 import Bar from './Pages/Home/HomePage';
 // import HomePage from './Pages/Home/HomePage';

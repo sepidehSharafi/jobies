@@ -8,20 +8,33 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { post } from '../../httpClient';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+// import { useAuth0 } from "@auth0/auth0-react";
+
 export default function SignIn() {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  // const handleSend = async () => {
-  //   const response = await post("/login", {username, password});
-  //   if(response.error){
-  //     console.log("error");
-  //   } else{
-  //     localStorage.setItem("userAuth", JSON.stringify(response.user));
-  //   }
+  // const authLogin = () => {
+  //   const { loginWithRedirect } = useAuth0();
+  
+  //   return <button onClick={() => loginWithRedirect()}>Log In</button>;
   // };
+useEffect (()=>{
+  const localUser = JSON.parse(localStorage.getItem("userAuth"));
+  if(localUser && localUser.id){
+    window.alert("you are ALREADY logged in!!!")
+    navigate("/");
+
+  }
+
+}
+
+)
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,12 +42,10 @@ export default function SignIn() {
     if (response.error) {
       console.log("error");
     } else {
-      console.log(response);
-      <Link to="/"></Link>
       localStorage.setItem("userAuth", JSON.stringify(response.user));
+      navigate("/");
     }
   };
-
 
   return (
     <Container component="main" maxWidth="xs">
@@ -82,6 +93,7 @@ export default function SignIn() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
+
             Sign In
           </Button>
           <Grid container>
