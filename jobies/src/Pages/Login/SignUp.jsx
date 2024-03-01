@@ -17,8 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { post } from '../../httpClient';
 
-
-
 function Copyright(props) {
   return (
     <Typography

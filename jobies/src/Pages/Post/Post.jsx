@@ -17,7 +17,6 @@ import Link from '@mui/joy/Link';
 import Favorite from '@mui/icons-material/Favorite';
 import { Link as RouterLink } from "react-router-dom";
 
-
 export default function MakePost() {
     const [subject, setSubject] = useState("");
     const [content, setContent] = useState("");

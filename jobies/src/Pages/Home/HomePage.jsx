@@ -75,7 +75,6 @@ function PostCards({ posts }) {
 }
 
 export default function Bar() {
-  // const [isAdmin, setIsAdmin] = useState(false);
   let [isLogin, setisLogin] = useState(false);
 
   const navigate = useNavigate();
