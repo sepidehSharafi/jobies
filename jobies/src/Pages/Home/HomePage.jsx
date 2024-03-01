@@ -27,7 +27,7 @@ import { createTheme } from '@mui/material/styles';
 //import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {MultipleInteractionCard} from './Pages/Post/Post.jsx'
+import MyBlog from './'
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -320,7 +320,6 @@ export default function Bar() {
           {renderMobileMenu}
           {renderMenu}
         </Box>
-        <MultipleInteractionCard/>
       </Container>
     </ThemeProvider>
   );
