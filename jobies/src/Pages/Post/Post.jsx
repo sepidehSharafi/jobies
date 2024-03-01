@@ -19,7 +19,6 @@ import Favorite from '@mui/icons-material/Favorite';
 import { Link as RouterLink } from "react-router-dom";
 
 
-// makePost.jsx
 export default function MakePost() {
     const [subject, setSubject] = useState("");
     const [content, setContent] = useState("");
@@ -41,7 +40,6 @@ export default function MakePost() {
       if (response.error) {
         console.error(response.error);
       } else {
-        console.log("Post created successfully!");
         navigate("/");
       }
     };
@@ -91,114 +89,6 @@ export default function MakePost() {
       </Container>
     );
   }
-  
-// export default function makePost() {
-
-//     const [subject, setSubject] = useState("");
-//     const [content, setContent] = useState("");
-//     const [imageURL, setImageURL] = useState("");
-
-//     const navigate = useNavigate();
-
-//     useEffect(() => {
-//         const localUser = JSON.parse(localStorage.getItem("userAuth"));
-//         if (localUser && localUser.id === null) {
-//             window.alert("you are NOT logged in!!!")
-//             navigate("/");
-
-//         }
-//     }
-//     )
-    
-//     const handleSubmit = async (event) => {
-//         event.preventDefault();
-//         const localUser = JSON.parse(localStorage.getItem("userAuth"));
-
-//         const username = localUser.username
-//         const userID = localUser.userID
-//         const response = await POST("/post", {userID, username,subject, content, imageURL}) ;
-//         console.log(response);
-//             navigate("/");
-//     };
-
-//     const Input = React.forwardRef(function CustomInput(props, ref) {
-//         return (
-//             <BaseInput
-//                 slots={{
-//                     root: RootDiv,
-//                     input: 'input',
-//                     textarea: TextareaElement,
-//                 }}
-//                 {...props}
-//                 ref={ref}
-//             />
-//         );
-//     });
-
-
-//     return (
-//         <Container component="main" maxWidth="xs">
-//             <Box
-//                 sx={{
-//                     marginTop: 8,
-//                     display: "flex",
-//                     flexDirection: "column",
-//                     alignItems: "center",
-//                 }}
-//             >
-//                 <Typography component="h1" variant="h5">
-//                     Make a POST!
-//                 </Typography>
-//                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-//                     <TextField
-//                         margin="normal"
-//                         required
-//                         fullWidth
-//                         id="subject"
-//                         label="subject"
-//                         name="subject"
-//                         autoComplete="subject"
-//                         onChange={(e) => setSubject(e.target.value)}
-//                         autoFocus
-//                     />
-//                     <TextField
-//                         margin="normal"
-//                         required
-//                         fullWidth
-//                         multiline
-//                         id="content"
-//                         label="content"
-//                         name="content"
-//                         autoComplete="content"
-//                         onChange={(e) => setContent(e.target.value)}
-//                         autoFocus
-//                     />
-//                     <TextField
-//                         margin="normal"
-//                         fullWidth
-//                         id="photo"
-//                         label="photo"
-//                         name="photo"
-//                         placeholder="Enter Photo URL"
-//                         autoComplete="photo"
-//                         onChange={(e) => setImageURL(e.target.value)}
-//                         autoFocus
-//                     />
-//                     <Button
-//                         type="submit"
-//                         fullWidth
-//                         variant="contained"
-//                         sx={{ mt: 3, mb: 2 }}
-//                     >
-//                         Make a Post
-//                     </Button>
-//                 </Box>
-//             </Box>
-//         </Container>
-//     );
-// }
-
-
 
  function MultipleInteractionCard( ) {
   return (
@@ -258,16 +148,3 @@ export default function MakePost() {
       </div>
     );
   }
-
-// const Post = (arr) => {
-//     const {title, description, date} = arr.post
-//     return (
-//         <div className="box_post">
-//             <div className="title">{title}</div>
-//             <div className="description">{description}</div>
-//             <div className="date">{date}</div>
-//         </div>
-//     )
-// }
-
-// export default Post

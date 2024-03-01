@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -25,7 +24,6 @@ import { createTheme } from '@mui/material/styles';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MultipleInteractionCard from '../Post/Post'
-// import { PostCards } from '../../Pages/Post/Post';
 import { get } from '../../httpClient';
 
 const Search = styled('div')(({ theme }) => ({
@@ -58,7 +56,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -76,25 +73,7 @@ function PostCards({ posts }) {
     </div>
   );
 }
-// function PostCards() {
-//   const [posts, setPosts] = useState([])
-//   useEffect(() => {
-//     const fetchPosts = async () => {
-//       const response = await get("/posts");
-//       setPosts(response.data);
-//     };
 
-//     fetchPosts();
-//   }, []);
-
-//   return (
-//     <div>
-//       {posts.map((post, index) => (
-//         <MultipleInteractionCard key={index} post={post} />
-//       ))}
-//     </div>
-//   );
-// }
 export default function Bar() {
   // const [isAdmin, setIsAdmin] = useState(false);
   let [isLogin, setisLogin] = useState(false);
@@ -126,12 +105,6 @@ export default function Bar() {
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
-
-  // useEffect(() => {
-  //   const localUser = JSON.parse(localStorage.getItem("userAuth"))
-  //   setIsAdmin(localUser.isAdmin);
-  // })
-
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -174,12 +147,11 @@ export default function Bar() {
       <Link to="/signup"><MenuItem onClick={handleMenuClose}>Sign Up</MenuItem></Link>
       <Link to="/profile"><MenuItem onClick={handleMenuClose}>Profile</MenuItem></Link>
       {/* {isAdmin &&
-        (<Link to="/signup"><MenuItem onClick={handleMenuClose}>Admin page</MenuItem></Link>)
+        (<Link to="/administration"><MenuItem onClick={handleMenuClose}>Admin page</MenuItem></Link>)
       } */}
       {login && (
         <Link to="/"><MenuItem onClick={logout}>log out</MenuItem></Link>
       )}
-
     </Menu>
   );
 

@@ -19,11 +19,6 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // const authLogin = () => {
-  //   const { loginWithRedirect } = useAuth0();
-  
-  //   return <button onClick={() => loginWithRedirect()}>Log In</button>;
-  // };
 useEffect (()=>{
   const localUser = JSON.parse(localStorage.getItem("userAuth"));
   if(localUser && localUser.id){

@@ -20,28 +20,3 @@ import Typography from '@mui/material/Typography';
   );
 };
 export default Profile;
-
-//export default Profile;
-//  function ImgMediaCard() {
-//   return (
-//     <Card sx={{ maxWidth: 345 }}>
-//       <CardMedia
-//         component="img"
-//         alt="green iguana"
-//         height="140"
-//         image="/static/images/cards/contemplative-reptile.jpg"
-//       />
-//       <CardContent>
-//         <Typography gutterBottom variant="h5" component="div" aria-valuetext="localUser.firstname">
-//         </Typography>
-//         <Typography variant="body2" color="text.secondary" te > 
-//         </Typography>
-//         <div title="localUser.firstname"></div>
-//         <Typography gutterBottom variant="h5" component="div" aria-valuetext="localUser.username">
-//         </Typography> <Typography gutterBottom variant="h5" component="div" aria-valuetext="localUser.email">
-//         </Typography>
-//       </CardContent>
-
-//     </Card>
-//   );
-// }
