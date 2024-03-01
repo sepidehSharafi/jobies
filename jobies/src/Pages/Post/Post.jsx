@@ -7,7 +7,6 @@ import Container from "@mui/material/Container";
 import { post } from '../../httpClient';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input as BaseInput } from '@mui/base/Input';
 import Card from '@mui/joy/Card';
 import AspectRatio from '@mui/joy/AspectRatio';
 import CardContent from '@mui/joy/CardContent';
