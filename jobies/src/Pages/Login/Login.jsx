@@ -109,6 +109,7 @@ useEffect (()=>{
             </Grid>
           </Grid>
         </Box>
+        <RouterLink to="/"><Button type="Back" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>Back</Button></RouterLink>
       </Box>
     </Container>
   );

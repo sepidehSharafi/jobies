@@ -18,17 +18,15 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { createSvgIcon } from '@mui/material/utils';
 import Stack from '@mui/material/Stack';
-import Icon from '@mui/material/Icon';
-import { green } from '@mui/material/colors';
 import { Link } from "react-router-dom";
 import { Container } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material/styles';
-//import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import MyBlog from './'
-
+import MultipleInteractionCard from '../Post/Post'
+// import { PostCards } from '../../Pages/Post/Post';
+import { get } from '../../httpClient';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -69,7 +67,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+function PostCards({ posts }) {
+  return (
+    <div>
+      {posts.map((post, index) => (
+        <MultipleInteractionCard key={index} post={post} />
+      ))}
+    </div>
+  );
+}
+// function PostCards() {
+//   const [posts, setPosts] = useState([])
+//   useEffect(() => {
+//     const fetchPosts = async () => {
+//       const response = await get("/posts");
+//       setPosts(response.data);
+//     };
 
+//     fetchPosts();
+//   }, []);
+
+//   return (
+//     <div>
+//       {posts.map((post, index) => (
+//         <MultipleInteractionCard key={index} post={post} />
+//       ))}
+//     </div>
+//   );
+// }
 export default function Bar() {
   // const [isAdmin, setIsAdmin] = useState(false);
   let [isLogin, setisLogin] = useState(false);
@@ -82,6 +107,17 @@ export default function Bar() {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const response = await get("/posts");
+      setPosts(response.data);
+    };
+    fetchPosts();
+  }, []);
+
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -96,25 +132,6 @@ export default function Bar() {
   //   setIsAdmin(localUser.isAdmin);
   // })
 
-
-  // const AuthLogin = () => {
-  //   const { loginWithRedirect } = useAuth0();
-
-
-  //   const handleLogin = () => {
-  //     loginWithRedirect();
-  //   };
-  //   return <Auth0Provider>
-  //     <MenuItem onClick={handleLogin}>Log In</MenuItem>;
-  //   </Auth0Provider>
-  // };
-
-
-  // const authLogin = () => {
-  //   const { loginWithRedirect } = useAuth0();
-
-  //   return <button onClick={() => loginWithRedirect()}>Log In</button>;
-  // };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -155,6 +172,7 @@ export default function Bar() {
     >
       <Link to="/login"><MenuItem onClick={handleMenuClose}>Login</MenuItem></Link>
       <Link to="/signup"><MenuItem onClick={handleMenuClose}>Sign Up</MenuItem></Link>
+      <Link to="/profile"><MenuItem onClick={handleMenuClose}>Profile</MenuItem></Link>
       {/* {isAdmin &&
         (<Link to="/signup"><MenuItem onClick={handleMenuClose}>Admin page</MenuItem></Link>)
       } */}
@@ -166,7 +184,6 @@ export default function Bar() {
   );
 
   const PlusIcon = createSvgIcon(
-    // credit: plus icon from https://heroicons.com/
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -320,7 +337,9 @@ export default function Bar() {
           {renderMobileMenu}
           {renderMenu}
         </Box>
+        <PostCards posts={posts} />
       </Container>
     </ThemeProvider>
   );
 }
+

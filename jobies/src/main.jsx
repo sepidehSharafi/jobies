@@ -5,6 +5,7 @@ import HomePage from './Pages/Home/HomePage.jsx'
 import Login from './Pages/Login/Login.jsx'
 import SignUp from './Pages/Login/SignUp.jsx'
 import Post from './Pages/Post/Post.jsx'
+import Profile from './Pages/Profile/Profile.jsx'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/post",
     element: <Post />
+  },
+  {
+    path: "/profile",
+    element: <Profile />
   }
 ])
 
