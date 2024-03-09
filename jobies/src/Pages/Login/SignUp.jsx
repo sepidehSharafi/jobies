@@ -50,8 +50,8 @@ function SignUp() {
     try {
         const response = await post("/signup", { firstname, lastname, username, password, email });
         console.log(response);
-        if(response && response.user) {
-          localStorage.setItem("userAuth", JSON.stringify({ firstname, lastname, username, email }));
+        if(response.user) {
+          localStorage.setItem("userAuth", JSON.stringify({ firstname, lastname, username,password, email }));
           navigate("/");
         } else {
           console.log("Invalid response or user not found in response.");

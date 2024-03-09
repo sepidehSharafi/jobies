@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import HomePage from './Pages/Home/HomePage.jsx'
 import Login from './Pages/Login/Login.jsx'
 import SignUp from './Pages/Login/SignUp.jsx'
-import Post from './Pages/Post/Post.jsx'
+import CreatePost from './Pages/Post/CreatePost.jsx'
 import Profile from './Pages/Profile/Profile.jsx'
 import {
   createBrowserRouter,
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/post",
-    element: <Post />
+    element: <CreatePost />
   },
   {
     path: "/profile",

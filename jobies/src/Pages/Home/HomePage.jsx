@@ -23,7 +23,7 @@ import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material/styles';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import MultipleInteractionCard from '../Post/Post'
+import {PostCard} from '../Post/Post'
 import { get } from '../../httpClient';
 
 const Search = styled('div')(({ theme }) => ({
@@ -64,13 +64,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
   },
 }));
+
 function PostCards({ posts }) {
   return (
+    (posts && 
     <div>
-      {/* {posts.map((post, index) => (
-        <MultipleInteractionCard key={index} post={post} />
-      ))} */}
+      {posts.map((post, index) => (  
+        <PostCard key={index} post={post} />
+      ))}
     </div>
+    )
   );
 }
 
@@ -91,7 +94,8 @@ export default function Bar() {
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await get("/posts");
-      setPosts(response.data);
+      console.log(response);
+      setPosts(response);
     };
     fetchPosts();
   }, []);

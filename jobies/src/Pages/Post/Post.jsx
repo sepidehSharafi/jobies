@@ -1,148 +1,118 @@
 import * as React from 'react';
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { post } from '../../httpClient';
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Card from '@mui/joy/Card';
-import AspectRatio from '@mui/joy/AspectRatio';
-import CardContent from '@mui/joy/CardContent';
-import CardOverflow from '@mui/joy/CardOverflow';
-import Divider from '@mui/joy/Divider';
-import IconButton from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
-import Favorite from '@mui/icons-material/Favorite';
-import { Link as RouterLink } from "react-router-dom";
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Badge } from '@mui/material';
 
-export default function MakePost() {
-    const [subject, setSubject] = useState("");
-    const [content, setContent] = useState("");
-    const [imageURL, setImageURL] = useState("");
-  
-    const navigate = useNavigate();
-  
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-      const localUser = JSON.parse(localStorage.getItem("userAuth"));
-      if (!localUser && !localUser.userID) {
-        window.alert("You are not logged in!");
-        navigate("/");
-        return;
-      }
-  
-      const { userID, username } = localUser;
-      const response = await post("/post", { userID, username, subject, content, imageURL });
-      if (response.error) {
-        console.error(response.error);
-      } else {
-        navigate("/");
-      }
-    };
-  
-    return (
-      <Container component="main" maxWidth="xs">
-        <Box sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <Typography component="h1" variant="h5">Make a POST!</Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="subject"
-              label="Subject"
-              name="subject"
-              autoComplete="subject"
-              onChange={(e) => setSubject(e.target.value)}
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              multiline
-              id="content"
-              label="Content"
-              name="content"
-              autoComplete="content"
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <TextField
-              margin="normal"
-              fullWidth
-              id="imageURL"
-              label="Image URL"
-              name="imageURL"
-              placeholder="Enter Photo URL"
-              autoComplete="imageURL"
-              onChange={(e) => setImageURL(e.target.value)}
-            />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>Make a Post</Button>
-          </Box>
-          <RouterLink to="/"><Button type="Back" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>Back</Button></RouterLink>
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
-        </Box>
-      </Container>
-    );
+export function PostCard(post) {
+  const [expanded, setExpanded] = React.useState(false);
+
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+console.log(post);
+console.log(post.post.posttitle);
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  const response = await put("/login", { username, password });
+  console.log(response);
+  if (response.error) {
+    console.log("error");
+  } else {
+    localStorage.setItem("userAuth", JSON.stringify(response.user));
+    navigate("/");
   }
+};
 
- function MultipleInteractionCard( ) {
   return (
-    <Card variant="outlined" sx={{ width: 320 }}>
-      <CardOverflow>
-        <AspectRatio ratio="2">
-          <img
-            
-            loading="lazy"
-            alt=""
-          />
-        </AspectRatio>
-        <IconButton
-          aria-label="Like minimal photography"
-          size="md"
-          variant="solid"
-          color="danger"
-          sx={{
-            position: 'absolute',
-            zIndex: 2,
-            borderRadius: '50%',
-            right: '1rem',
-            bottom: 0,
-            transform: 'translateY(50%)',
-          }}
-        >
-          <Favorite />
-        </IconButton>
-      </CardOverflow>
+    <Card sx={{ maxWidth: 345 }}>
+      <CardHeader
+        avatar={
+          <Avatar sx={{ bgcolor: red }} aria-label="recipe">
+            R
+          </Avatar>
+        }
+        action={
+          <IconButton aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
+        }
+        
+        title={post.post.posttitle}
+        subheader={post.post.created_at}
+      />
+      <CardMedia
+        component="img"
+        height="194"
+        image={post.post.image_url}
+        alt={post.post.postcontent}
+      />
       <CardContent>
-        <Typography level="title-md">
-          <Link href="#multiple-actions" overlay underline="none">
-          </Link>
-        </Typography>
-        <Typography level="body-sm">
-          <Link href="#multiple-actions"></Link>
+        <Typography variant="body2" color="text.secondary">
         </Typography>
       </CardContent>
-      <CardOverflow variant="soft">
-        <Divider inset="context" />
-        <CardContent orientation="horizontal">
-          <Typography level="body-xs"></Typography>
-          <Divider orientation="vertical" />
-          <Typography level="body-xs"></Typography>
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+        <Badge badgeContent={post.post.likes_count} color="secondary">
+          <FavoriteIcon />
+          </Badge>
+        </IconButton>
+        <IconButton aria-label="share">
+        <Badge badgeContent={post.post.dislikes_count} color="secondary">
+          <ShareIcon />
+          </Badge>
+        </IconButton>
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography paragraph>
+      
+          </Typography>
+          <Typography paragraph>
+       
+          </Typography>
+          <Typography paragraph>
+        
+          </Typography>
+          <Typography>
+           
+          </Typography>
         </CardContent>
-      </CardOverflow>
+      </Collapse>
     </Card>
   );
 }
 
- function PostCards() {
-    return (
-      <div>
-        {posts.map((post, index) => (
-          <MultipleInteractionCard key={index} post={post} />
-        ))}
-      </div>
-    );
-  }

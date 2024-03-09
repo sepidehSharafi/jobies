@@ -32,6 +32,7 @@ useEffect (()=>{
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await post("/login", { username, password });
+    console.log(response);
     if (response.error) {
       console.log("error");
     } else {
