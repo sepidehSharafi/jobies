@@ -372,6 +372,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {PostCard} from '../Post/Post'
 import { get } from '../../httpClient';
+import SortIcon from '@mui/icons-material/Sort';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -447,6 +448,13 @@ export default function Bar() {
     fetchPosts();
   }, []);
 
+
+  const handleSort = async (event) => {
+    event.preventDefault();
+    const response = await get("/posts/sort");
+    console.log(response)
+    setPosts(response);
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -607,6 +615,9 @@ export default function Bar() {
                   inputProps={{ 'aria-label': 'search' }}
                 />
               </Search>
+              <SortIcon
+                onClick={handleSort}
+              ></SortIcon>
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <Link to="/post"><IconButton size="large" color="inherit">

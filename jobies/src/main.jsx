@@ -53,6 +53,7 @@ import SignUp from './Pages/Login/SignUp.jsx'
 import CreatePost from './Pages/Post/CreatePost.jsx'
 import Profile from './Pages/Profile/Profile.jsx'
 import DisplayPost from './Pages/Post/DisplayPost.jsx'
+import UpdatePosrForm from './Pages/Post/UpdatePostForm.jsx'
 
 import {
   createBrowserRouter,
@@ -84,7 +85,12 @@ const router = createBrowserRouter([
   {
     path: "/displayPost/:id",
     element: <DisplayPost />
+  },
+  {
+    path: "/updatePosrForm",
+    element: <UpdatePosrForm />
   }
+  
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(

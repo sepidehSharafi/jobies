@@ -1,40 +1,28 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
-import { useState, useEffect } from "react";
+import { put } from '../../httpClient';
+import { TextField } from '@mui/material';
 import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { createTheme } from '@mui/material/styles';
 import { get } from '../../httpClient';
-import {getComment} from '../../httpClient';
-import { put } from '../../httpClient';
-import { post as POST } from '../../httpClient';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import CardMedia from '@mui/material/CardMedia';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
-import { Link } from "react-router-dom";
+import { styled } from '@mui/material/styles';
+import CardMedia from '@mui/material/CardMedia';
 
 
+const handleUpdate = async (event) =>{
+    event.preventDefault();
+    const response = await POST("/post/update/:id", { id,userID, username, comment });
+
+}
 const DemoPaper = styled(Paper)(({ theme }) => ({
     width: 120,
     height: 120,
     padding: theme.spacing(2),
     ...theme.typography.body2,
     textAlign: 'center',
-}));
-
-const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
 }));
 
 export default function DisplayPost() {
@@ -53,9 +41,6 @@ export default function DisplayPost() {
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState("");
 
-  
-
-   
     const handleSubmit = async (event) => {
         event.preventDefault();
         const localUser = JSON.parse(localStorage.getItem("userAuth"));
@@ -74,50 +59,11 @@ export default function DisplayPost() {
           console.error(response.error);
       };
     }
-    
-    useEffect(() => {
-        const fetchComments = async () => {
-          const response = await get("/posts/comment", id);
-          console.log(response);
-          setComments(response);
-        };
-        fetchComments();
-      }, []);
 
-    
-      function ShowComments({ comments }) {
-        if (!Array.isArray(comments)) {
-          return null; 
-        }
-      
-        return (
-          <div>
-            {comments.map((comment, index) => (  
-              <textarea key={index} comment={comment} />
-            ))}
-          </div>
-        );
-      }
-      
+  
 
-    useEffect(() => {
-        const fetchPost = async () => {
-            const response = await get(`/posts/${id}`);
-            console.log(response);
-            setPost(response);
-        };
-        fetchPost();
-    }, []);
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
 
-    const handleSubmitLike = async (event) => {
-        event.preventDefault();
-        const response = await put("/post/like/:id", { id });
-        console.log(response);
-    };
 
     const theme = createTheme();
     theme.spacing(4);
@@ -148,10 +94,9 @@ export default function DisplayPost() {
             justifyContent: 'center',
           }}
           square={false}>
-           <h1>{post?.posttitle} </h1> 
-            <h2>username: {post?.username}</h2>
-            <h3>post content:{post?.postcontent}</h3>
-            <h4>created at:{post?.created_at}  </h4> 
+           <TextField>{post?.posttitle}</TextField>
+           <TextField>{post?.postcontent}</TextField>
+           <TextField>{post?.created_at}</TextField>
             </DemoPaper>
           <Box
             component="form"
@@ -170,20 +115,11 @@ export default function DisplayPost() {
         height="194"
         image={post?.image_url}
       />
-      <SentimentVerySatisfiedIcon></SentimentVerySatisfiedIcon>
-      <SentimentVeryDissatisfiedIcon></SentimentVeryDissatisfiedIcon>
-     <Link to="/updatePosrForm"> <button>Edit</button></Link>
-      <button>Delete</button>
 
-<label>comment</label>
-<TextField placeholder='write a comment'
-onChange={(e) => setComment(e.target.value)}
 
->
-</TextField>
+
 <button onClick={handleSubmit}>submit</button>
-<ShowComments comments={comments} />
+
       </Box>
     );
         }
-
