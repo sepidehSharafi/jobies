@@ -6,8 +6,10 @@ import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDiss
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { createTheme } from '@mui/material/styles';
-import { get } from '../../httpClient'
-import { put } from '../../httpClient'
+import { get } from '../../httpClient';
+import {getComment} from '../../httpClient';
+import { put } from '../../httpClient';
+import { post as POST } from '../../httpClient';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import CardMedia from '@mui/material/CardMedia';
@@ -21,15 +23,6 @@ const DemoPaper = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     textAlign: 'center',
 }));
-
-function SquareCorners() {
-    return (
-        // <Stack direction="row" spacing={2}>
-        //   <DemoPaper square={false}>{post?.posttitle}, {post?.postcontent}</DemoPaper>
-        // </Stack>
-        <div></div>
-    );
-}
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -54,6 +47,55 @@ export default function DisplayPost() {
     const [dislike, setDisLike] = useState("");
 
     const [post, setPost] = useState();
+
+    const [comment, setComment] = useState("");
+    const [comments, setComments] = useState("");
+
+  
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const localUser = JSON.parse(localStorage.getItem("userAuth"));
+        console.log(localUser);
+        if (!localUser && !localUser.id) {
+          window.alert("You are not logged in!");
+          navigate("/");
+          return;
+        }
+    
+        const { userID, username } = localUser;
+        console.log("userId and username: " , userID, username);
+        const response = await POST("/post/comment", { id,userID, username, comment });
+        console.log(response);
+        if (response.error) {
+          console.error(response.error);
+      };
+    }
+    
+    useEffect(() => {
+        const fetchComments = async () => {
+          const response = await get("/posts/comment", id);
+          console.log(response);
+          setComments(response);
+        };
+        fetchComments();
+      }, []);
+
+    
+      function ShowComments({ comments }) {
+        if (!Array.isArray(comments)) {
+          return null; 
+        }
+      
+        return (
+          <div>
+            {comments.map((comment, index) => (  
+              <textarea key={index} comment={comment} />
+            ))}
+          </div>
+        );
+      }
+      
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -128,8 +170,14 @@ export default function DisplayPost() {
       <SentimentVerySatisfiedIcon></SentimentVerySatisfiedIcon>
       <SentimentVeryDissatisfiedIcon></SentimentVeryDissatisfiedIcon>
 <label>comment</label>
-<TextField placeholder='write a comment'></TextField>
+<TextField placeholder='write a comment'
+onChange={(e) => setComment(e.target.value)}
+
+>
+</TextField>
+<button onClick={handleSubmit}>submit</button>
+<ShowComments comments={comments} />
       </Box>
     );
-}
+        }
 

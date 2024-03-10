@@ -35,6 +35,22 @@ export async function get(path) {
 
   return data
 } 
+export async function getComment(path, params) {
+  var myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  var requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow'
+  };
+
+  const data = await fetch(`${BASE_URL}${path}`, requestOptions)
+    .then(response => response.json())
+    .catch(error => console.log('error', error));
+
+return data
+} 
 
 export async function deletePost(path, body) {
   var myHeaders = new Headers();
