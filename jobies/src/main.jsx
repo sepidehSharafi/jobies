@@ -87,7 +87,7 @@ const router = createBrowserRouter([
     element: <DisplayPost />
   },
   {
-    path: "/updatePosrForm",
+    path: "/displayPost/update/:id",
     element: <UpdatePosrForm />
   }
   

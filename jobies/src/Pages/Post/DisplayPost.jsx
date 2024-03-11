@@ -7,9 +7,10 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { createTheme } from '@mui/material/styles';
 import { get } from '../../httpClient';
-import {getComment} from '../../httpClient';
+import { getComment } from '../../httpClient';
 import { put } from '../../httpClient';
 import { post as POST } from '../../httpClient';
+import {DELETE} from '../../httpClient';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import CardMedia from '@mui/material/CardMedia';
@@ -53,52 +54,64 @@ export default function DisplayPost() {
     const [comment, setComment] = useState("");
     const [comments, setComments] = useState("");
 
-  
+    const handleDelete = async (event) => {
+        event.preventDefault();
+        const localUser = JSON.parse(localStorage.getItem("userAuth"));
+        console.log(localUser);
+        if (localUser.id == post.userID || localUser.isadmin) {
+            const response = await DELETE('/posts/:id', id)
+            // window.alert("post deleted!")
+        } else {
+            window.alert("You don't have permission!");
+            navigate("/");
+            return;
+        }
+    }
 
-   
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const localUser = JSON.parse(localStorage.getItem("userAuth"));
         console.log(localUser);
         if (!localUser && !localUser.id) {
-          window.alert("You are not logged in!");
-          navigate("/");
-          return;
+            window.alert("You are not logged in!");
+            navigate("/");
+            return;
         }
-    
+
         const { userID, username } = localUser;
-        console.log("userId and username: " , userID, username);
-        const response = await POST("/post/comment", { id,userID, username, comment });
+        console.log("userId and username: ", userID, username);
+        const response = await POST("/post/comment", { id, userID, username, comment });
         console.log(response);
         if (response.error) {
-          console.error(response.error);
-      };
+            console.error(response.error);
+        };
     }
-    
+
     useEffect(() => {
         const fetchComments = async () => {
-          const response = await get("/posts/comment", id);
-          console.log(response);
-          setComments(response);
+            const response = await get("/posts/comment", id);
+            console.log(response);
+            setComments(response);
         };
         fetchComments();
-      }, []);
+    }, []);
 
-    
-      function ShowComments({ comments }) {
+
+    function ShowComments({ comments }) {
         if (!Array.isArray(comments)) {
-          return null; 
+            return null;
         }
-      
+
         return (
-          <div>
-            {comments.map((comment, index) => (  
-              <textarea key={index} comment={comment} />
-            ))}
-          </div>
+            <div>
+                {comments.map((comment, index) => (
+                    <textarea key={index} comment={comment} />
+                ))}
+            </div>
         );
-      }
-      
+    }
+
 
     useEffect(() => {
         const fetchPost = async () => {
@@ -126,64 +139,64 @@ export default function DisplayPost() {
     console.log(post?.postid);
     return (
         <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-        }}
-      >
-        <Stack direction="column" spacing={4}>
-          <DemoPaper
-           sx={{
-            width: 500, 
-            height: 'auto',
-            p: 2, 
-            textAlign: 'center', 
-            display: 'flex',
-            flexDirection: 'column',
-            direction: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          square={false}>
-           <h1>{post?.posttitle} </h1> 
-            <h2>username: {post?.username}</h2>
-            <h3>post content:{post?.postcontent}</h3>
-            <h4>created at:{post?.created_at}  </h4> 
-            </DemoPaper>
-          <Box
-            component="form"
             sx={{
-              '& > :not(style)': { m: 1, width: '25ch' },
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100vh',
             }}
-            noValidate
-            autoComplete="off"
-          >
-          </Box>
-        </Stack>
+        >
+            <Stack direction="column" spacing={4}>
+                <DemoPaper
+                    sx={{
+                        width: 500,
+                        height: 'auto',
+                        p: 2,
+                        textAlign: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        direction: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                    square={false}>
+                    <h1>{post?.posttitle} </h1>
+                    <h2>username: {post?.username}</h2>
+                    <h3>post content:{post?.postcontent}</h3>
+                    <h4>created at:{post?.created_at}  </h4>
+                </DemoPaper>
+                <Box
+                    component="form"
+                    sx={{
+                        '& > :not(style)': { m: 1, width: '25ch' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                >
+                </Box>
+            </Stack>
 
-        <CardMedia
-        width={500}
-        component="img"
-        height="194"
-        image={post?.image_url}
-      />
-      <SentimentVerySatisfiedIcon></SentimentVerySatisfiedIcon>
-      <SentimentVeryDissatisfiedIcon></SentimentVeryDissatisfiedIcon>
-     <Link to="/updatePosrForm"> <button>Edit</button></Link>
-      <button>Delete</button>
+            <CardMedia
+                width={500}
+                component="img"
+                height="194"
+                image={post?.image_url}
+            />
+            <SentimentVerySatisfiedIcon></SentimentVerySatisfiedIcon>
+            <SentimentVeryDissatisfiedIcon></SentimentVeryDissatisfiedIcon>
+            <Link to={`/displayPost/update/${id}`}> <button>Edit</button></Link>
+            <button onClick={handleDelete}>Delete</button>
 
-<label>comment</label>
-<TextField placeholder='write a comment'
-onChange={(e) => setComment(e.target.value)}
+            <label>comment</label>
+            <TextField placeholder='write a comment'
+                onChange={(e) => setComment(e.target.value)}
 
->
-</TextField>
-<button onClick={handleSubmit}>submit</button>
-<ShowComments comments={comments} />
-      </Box>
+            >
+            </TextField>
+            <button onClick={handleSubmit}>submit</button>
+            <ShowComments comments={comments} />
+        </Box>
     );
-        }
+}
 

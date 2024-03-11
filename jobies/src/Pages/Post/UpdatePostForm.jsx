@@ -12,9 +12,9 @@ import { styled } from '@mui/material/styles';
 import CardMedia from '@mui/material/CardMedia';
 
 
-const handleUpdate = async (event) =>{
+const handleUpdate = async (event) => {
     event.preventDefault();
-    const response = await POST("/post/update/:id", { id,userID, username, comment });
+    const response = await POST("/post/update/:id", { id, userID, username, comment });
 
 }
 const DemoPaper = styled(Paper)(({ theme }) => ({
@@ -31,39 +31,44 @@ export default function DisplayPost() {
     const { id } = useParams();
     console.log("Hello world!!!");
     console.log(id);
-    const [expanded, setExpanded] = React.useState(false);
-
-    const [like, setLike] = useState("");
-    const [dislike, setDisLike] = useState("");
 
     const [post, setPost] = useState();
 
-    const [comment, setComment] = useState("");
-    const [comments, setComments] = useState("");
+    const [postTitle, setPostTitle] = useState();
+    const [postContent, setPostContent] = useState();
+    const [imageURL, setImageURL] = useState();
+
+    useEffect(() => {
+        const fetchPost = async () => {
+            const response = await get(`/posts/${id}`);
+            console.log(response);
+            setPost(response);
+        };
+        fetchPost();
+    }, []);
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const localUser = JSON.parse(localStorage.getItem("userAuth"));
         console.log(localUser);
-        if (!localUser && !localUser.id) {
-          window.alert("You are not logged in!");
-          navigate("/");
-          return;
-        }
-    
         const { userID, username } = localUser;
-        console.log("userId and username: " , userID, username);
-        const response = await POST("/post/comment", { id,userID, username, comment });
+        if (!localUser && !localUser.id) {
+            window.alert("You are not logged in!");
+            navigate("/");
+            return;
+        }
+        if (localUser.isAdmin === false && localUser.id != post.userID) {
+            window.alert("You dont have permission");
+            navigate("/");
+        }
+        console.log("userId and username: ", userID, username);
+        const response = await put("/displayPost/update/:id", { postTitle, postContent, imageURL });
         console.log(response);
         if (response.error) {
-          console.error(response.error);
-      };
+            console.error(response.error);
+        };
     }
-
-  
-
-
-
 
     const theme = createTheme();
     theme.spacing(4);
@@ -71,55 +76,17 @@ export default function DisplayPost() {
     console.log(post?.posttitle);
     console.log(post?.postid);
     return (
-        <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '100vh',
-        }}
-      >
-        <Stack direction="column" spacing={4}>
-          <DemoPaper
-           sx={{
-            width: 500, 
-            height: 'auto',
-            p: 2, 
-            textAlign: 'center', 
-            display: 'flex',
-            flexDirection: 'column',
-            direction: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          square={false}>
-           <TextField>{post?.posttitle}</TextField>
-           <TextField>{post?.postcontent}</TextField>
-           <TextField>{post?.created_at}</TextField>
-            </DemoPaper>
-          <Box
-            component="form"
-            sx={{
-              '& > :not(style)': { m: 1, width: '25ch' },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-          </Box>
-        </Stack>
-
-        <CardMedia
-        width={500}
-        component="img"
-        height="194"
-        image={post?.image_url}
-      />
-
-
-
-<button onClick={handleSubmit}>submit</button>
-
-      </Box>
+        <div>
+            <textarea value={post?.posttitle}
+            onChange={(e) => setPostTitle(e.target.value)}
+            ></textarea>
+            <textarea
+            onChange={(e) => setPostContent(e.target.value)}
+            >{post?.postcontent}</textarea>
+            <textarea placeholder="enter image url"
+            onChange={(e) => setImageURL(e.target.value)}
+            ></textarea>
+            <button onClick={handleSubmit}>submit</button>
+        </div>
     );
-        }
+}

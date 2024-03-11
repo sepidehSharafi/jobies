@@ -52,7 +52,7 @@ export async function getComment(path, params) {
 return data
 } 
 
-export async function deletePost(path, body) {
+export async function DELETE(path, body) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   var raw = JSON.stringify(body);
