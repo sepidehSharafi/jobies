@@ -34,7 +34,7 @@ useEffect (()=>{
     const response = await post("/login", { username, password });
     console.log(response);
     if (response.error) {
-      console.log("error");
+      window.alert(error);
     } else {
       localStorage.setItem("userAuth", JSON.stringify(response.user));
       navigate("/");

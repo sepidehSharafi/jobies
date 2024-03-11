@@ -17,24 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { post } from '../../httpClient';
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
 function SignUp() {
@@ -49,15 +31,15 @@ function SignUp() {
     event.preventDefault();
     try {
         const response = await post("/signup", { firstname, lastname, username, password, email });
-        console.log(response);
         if(response.user) {
           localStorage.setItem("userAuth", JSON.stringify({ firstname, lastname, username,password, email }));
           navigate("/");
         } else {
-          console.log("Invalid response or user not found in response.");
+          window.alert("Invalid response or user not found in response.");
+
         }
     } catch (error) {
-        console.log(error);
+      window.alert(error);
     }   
 };
 

@@ -20,7 +20,6 @@ export default function MakePost() {
     const handleSubmit = async (event) => {
       event.preventDefault();
       const localUser = JSON.parse(localStorage.getItem("userAuth"));
-      console.log(localUser);
       if (!localUser && !localUser.id) {
         window.alert("You are not logged in!");
         navigate("/");
@@ -28,11 +27,9 @@ export default function MakePost() {
       }
   
       const { userID, username } = localUser;
-      console.log("userId and username: " , userID, username);
       const response = await post("/post", { userID, username, subject, content, imageURL });
-      console.log(response);
       if (response.error) {
-        console.error(response.error);
+        window.alert("somthing is wrong!");
       } else {
         navigate("/");
       }

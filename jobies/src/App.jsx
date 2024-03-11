@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { createTheme } from '@mui/material/styles';
 import Bar from './Pages/Home/HomePage';
-// import HomePage from './Pages/Home/HomePage';
-// import Login from './Pages/Login/Login';
-// import { ImgMediaCard } from './Pages/Home/HomePage';
 import { Box, Container } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 

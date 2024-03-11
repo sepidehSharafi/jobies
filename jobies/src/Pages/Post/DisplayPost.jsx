@@ -42,8 +42,6 @@ export default function DisplayPost() {
 
     const navigate = useNavigate();
     const { id } = useParams();
-    console.log("Hello world!!!");
-    console.log(id);
     const [expanded, setExpanded] = React.useState(false);
 
     const [like, setLike] = useState("");
@@ -57,10 +55,8 @@ export default function DisplayPost() {
     const handleDelete = async (event) => {
         event.preventDefault();
         const localUser = JSON.parse(localStorage.getItem("userAuth"));
-        console.log(localUser);
         if (localUser.id == post.userID || localUser.isadmin) {
             const response = await DELETE('/posts/:id', id)
-            // window.alert("post deleted!")
         } else {
             window.alert("You don't have permission!");
             navigate("/");
@@ -72,7 +68,6 @@ export default function DisplayPost() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const localUser = JSON.parse(localStorage.getItem("userAuth"));
-        console.log(localUser);
         if (!localUser && !localUser.id) {
             window.alert("You are not logged in!");
             navigate("/");
@@ -80,18 +75,15 @@ export default function DisplayPost() {
         }
 
         const { userID, username } = localUser;
-        console.log("userId and username: ", userID, username);
         const response = await POST("/post/comment", { id, userID, username, comment });
-        console.log(response);
         if (response.error) {
-            console.error(response.error);
+window.alert("somthing is wrong!")
         };
     }
 
     useEffect(() => {
         const fetchComments = async () => {
             const response = await get("/posts/comment", id);
-            console.log(response);
             setComments(response);
         };
         fetchComments();
@@ -116,15 +108,10 @@ export default function DisplayPost() {
     useEffect(() => {
         const fetchPost = async () => {
             const response = await get(`/posts/${id}`);
-            console.log(response);
             setPost(response);
         };
         fetchPost();
     }, []);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
 
     const handleSubmitLike = async (event) => {
         event.preventDefault();
@@ -191,7 +178,6 @@ export default function DisplayPost() {
             <label>comment</label>
             <TextField placeholder='write a comment'
                 onChange={(e) => setComment(e.target.value)}
-
             >
             </TextField>
             <button onClick={handleSubmit}>submit</button>
